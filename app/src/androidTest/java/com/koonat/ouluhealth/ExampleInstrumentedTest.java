@@ -1,4 +1,4 @@
-package com.koonat.ouluhealthhack2018;
+package com.koonat.ouluhealth;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
