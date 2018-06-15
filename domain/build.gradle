@@ -6,7 +6,7 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.4.0'
     api 'com.google.code.gson:gson:2.8.5'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
+    testImplementation 'org.mockito:mockito-core:2.8.9'
     implementation 'junit:junit:4.12'
 }
 
