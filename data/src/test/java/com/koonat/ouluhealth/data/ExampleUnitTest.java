@@ -1,4 +1,4 @@
-package com.koonat.ouluhealthhack2018;
+package com.koonat.ouluhealth.data;
 
 import org.junit.Test;
 
