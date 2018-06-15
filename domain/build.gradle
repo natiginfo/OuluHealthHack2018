@@ -5,8 +5,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.squareup.retrofit2:retrofit:2.4.0'
     api 'com.google.code.gson:gson:2.8.5'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
+    implementation 'junit:junit:4.12'
 }
 
 sourceCompatibility = "1.8"
