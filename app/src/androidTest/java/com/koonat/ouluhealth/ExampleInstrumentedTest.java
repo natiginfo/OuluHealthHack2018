@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.koonat.ouluhealthhack2018", appContext.getPackageName());
+        assertEquals("com.koonat.ouluhealth", appContext.getPackageName());
     }
 }
