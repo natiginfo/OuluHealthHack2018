@@ -10,7 +10,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "ACCESS_TOKEN_URL", '"https://c3be9ccd.ngrok.io"'
+        buildConfigField "String", "ACCESS_TOKEN_URL", '"https://02319826.ngrok.io"'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }

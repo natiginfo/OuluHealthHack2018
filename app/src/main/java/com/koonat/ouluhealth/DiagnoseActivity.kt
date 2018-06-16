@@ -1,14 +1,27 @@
 package com.koonat.ouluhealth
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import com.google.gson.Gson
+import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
+import com.koonat.ouluhealth.data.PredictionRepositoryCreator
+import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor
+import com.koonat.ouluhealth.domain.interactor.GetMatchedSymptomsInteractor
+import com.koonat.ouluhealth.domain.interactor.GetPredictedSymptomsInteractor
+import com.koonat.ouluhealth.domain.model.MatchedSymptom
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class DiagnoseActivity : AppCompatActivity() {
     companion object {
+        val TAG="DiagnoseActivity"
         val BACK_USER_DETAILS = "BACK_USER_DETAILS"
         val BACK_ADD_SYMPTOMS = "BACK_ADD_SYMPTOMS"
         val PICK_SYMPTOM_REQUEST = 111
@@ -47,6 +60,8 @@ class DiagnoseActivity : AppCompatActivity() {
     fun showSymptomSelectorFragment(event: ContinueButtonClickedEvent) {
         age = event.age
         sex = event.sex
+        PatientInfoImpl.getInstance().age = age
+        PatientInfoImpl.getInstance().sex = sex
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
 
@@ -68,5 +83,44 @@ class DiagnoseActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == PICK_SYMPTOM_REQUEST) {
+            val symptom = data?.getStringExtra("symptom")
+            val matchedSymptom = Gson().fromJson<MatchedSymptom>(symptom, MatchedSymptom::class.java)
+            matchedSymptom.positive = true
+            showAdditionalQuestions(matchedSymptom)
+        }
+    }
+
+    private var token = ""
+    private fun showAdditionalQuestions(matchedSymptom: MatchedSymptom?) {
+        val accessTokenRepo = AccessTokenRepositoryCreator.createAccessTokenRepository()
+        val getAccessTokenInteractor = GetAccessTokenInteractor(accessTokenRepo = accessTokenRepo)
+
+        getAccessTokenInteractor.execute()
+                .map { tokenHolder ->
+                    token = tokenHolder.token
+                    return@map PredictionRepositoryCreator.createPredictionRepository(tokenHolder.token)
+                }
+                .map { predictionRepo ->
+                    GetPredictedSymptomsInteractor(
+                            patientInfo = PatientInfoImpl.getInstance(),
+                            predictionRepo = predictionRepo)
+                }
+                .flatMap { interactor -> interactor.execute(listOf(matchedSymptom!!)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy { predictedSymptoms ->
+                    Log.d(TAG, "QUESTIONS RECEIVED")
+
+                    val fragmentManager = supportFragmentManager
+                    val fragmentTransaction = fragmentManager.beginTransaction()
+                    fragmentTransaction
+                            .add(R.id.customActionBarHolder,
+                                    CustomActionBar.getInstance(title = "What are your symptoms?",
+                                            description = "Additional questions"))
+                            .add(R.id.contentHolder, ShowQuestionFragment())
+                            .commit()
+                }
+
     }
 }

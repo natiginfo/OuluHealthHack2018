@@ -8,6 +8,8 @@ public class PatientInfoImpl implements PatientInformationRepository {
 
     private static volatile PatientInfoImpl mInstance;
     private String patientId;
+    private int sex;
+    private int age;
 
     private PatientInfoImpl() {
         patientId = UUID.randomUUID().toString();
@@ -36,11 +38,19 @@ public class PatientInfoImpl implements PatientInformationRepository {
 
     @Override
     public int getAge() {
-        return 24;
+        return sex;
     }
 
     @Override
     public int getSex() {
-        return 0;
+        return age;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
