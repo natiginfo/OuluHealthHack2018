@@ -8,12 +8,28 @@ data class MatchedSymptom(
         @SerializedName("positive") var positive: Boolean = false
 )
 
+data class PredictionBody(
+        @SerializedName("symptoms") val symptoms: List<MatchedSymptom>,
+        @SerializedName("age") val age: Int,
+        @SerializedName("sex") val sex: Int,
+        @SerializedName("user_id") val userId: String,
+        @SerializedName("patient_id") val patientId: String
+)
+
 data class PredictedSymptom(
         @SerializedName("id") val id: Int,
         @SerializedName("name") val name: String,
         @SerializedName("score") var score: Int,
         @SerializedName("positive") var positive: Boolean = false,
         @SerializedName("skip") var skip: Boolean = false
+)
+
+data class DiagnosisBody(
+        @SerializedName("symptoms") val symptoms: List<PredictedSymptom>,
+        @SerializedName("age") val age: Int,
+        @SerializedName("sex") val sex: Int,
+        @SerializedName("user_id") val userId: String,
+        @SerializedName("patient_id") val patientId: String
 )
 
 data class Diagnosis(
