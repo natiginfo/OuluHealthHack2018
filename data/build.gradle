@@ -10,7 +10,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-
+        buildConfigField "String", "ACCESS_TOKEN_URL", '"https://c3be9ccd.ngrok.io"'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -22,10 +22,19 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
+    api "com.squareup.retrofit2:converter-gson:2.4.0"
+
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     api project(path: ':domain')
     implementation 'com.android.support:appcompat-v7:27.1.1'
