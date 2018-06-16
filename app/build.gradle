@@ -10,7 +10,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.koonat.ouluhealth"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -40,7 +40,8 @@ dependencies {
     api 'io.reactivex.rxjava2:rxandroid:2.0.2'
     api 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
-    api project(path: ':domain')
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation project(path: ':domain')
     api project(path: ':data')
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:support-v4:27.1.1'

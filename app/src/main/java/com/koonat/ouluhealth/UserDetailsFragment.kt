@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_user_details.*
+import org.greenrobot.eventbus.EventBus
 
 class UserDetailsFragment : Fragment() {
     private var selectedGender = -1
@@ -30,5 +31,11 @@ class UserDetailsFragment : Fragment() {
                 selectedGender = 0
             }
         }
+
+        continueButton.setOnClickListener {
+            EventBus.getDefault().post(ContinueButtonClickedEvent(Integer.valueOf(ageEditText.text.toString()), selectedGender))
+        }
     }
 }
+
+class ContinueButtonClickedEvent(val age: Int = 0, val sex: Int)

@@ -12,13 +12,13 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 
-class MainActivity : AppCompatActivity() {
+class SearchSymptomActivity : AppCompatActivity() {
 
     private var token: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_search_symptom)
         val accessTokenRepo = AccessTokenRepositoryCreator.createAccessTokenRepository()
         val getAccessTokenInteractor = GetAccessTokenInteractor(accessTokenRepo = accessTokenRepo)
 
