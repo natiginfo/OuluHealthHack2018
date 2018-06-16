@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OuluHealthHack2018</string>
+    <string name="splash_intro"><![CDATA[Identify & diagnosize your health problems and find help in time]]></string>
 </resources>
