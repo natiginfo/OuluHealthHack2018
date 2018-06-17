@@ -29,6 +29,7 @@ class DiagnoseActivity : AppCompatActivity() {
         val BACK_USER_DETAILS = "BACK_USER_DETAILS"
         val BACK_ADD_SYMPTOMS = "BACK_ADD_SYMPTOMS"
         val BACK_DIAGNOSIS_RESULTS = "BACK_DIAGNOSIS_RESULTS"
+        val BACK_DIAGNOSIS_DETAILS = "BACK_DIAGNOSIS_DETAILS"
         val PICK_SYMPTOM_REQUEST = 111
     }
 
@@ -161,7 +162,8 @@ class DiagnoseActivity : AppCompatActivity() {
                     .add(R.id.customActionBarHolder,
                             CustomActionBar.getInstance(description = "Please, wait",
                                     title = "Analyzing"))
-                    .add(R.id.contentHolder, ProgressFragment())
+                    .replace(R.id.contentHolder, ProgressFragment())
+                    .disallowAddToBackStack()
                     .commit()
 
             val accessTokenRepo = AccessTokenRepositoryCreator.createAccessTokenRepository()
@@ -230,9 +232,9 @@ class DiagnoseActivity : AppCompatActivity() {
                             CustomActionBar.getInstance(title = "Treatment suggestion",
                                     description = "One more thing!"))
                             .replace(R.id.contentHolder, DiagnosisDetailsFragment.getInstance(details.name, details.description, details.wikiUrl))
+                            .addToBackStack(BACK_DIAGNOSIS_DETAILS)
                             .commit()
                 }
-
     }
 
 
