@@ -10,6 +10,7 @@ import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
 import com.koonat.ouluhealth.data.PredictionRepositoryCreator
 import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor
 import com.koonat.ouluhealth.domain.interactor.GetDiagnosisInteractor
+import com.koonat.ouluhealth.domain.interactor.GetDiagnosysDetailsInteractor
 import com.koonat.ouluhealth.domain.interactor.GetPredictedSymptomsInteractor
 import com.koonat.ouluhealth.domain.model.Diagnosis
 import com.koonat.ouluhealth.domain.model.MatchedSymptom
@@ -203,6 +204,34 @@ class DiagnoseActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun showDiseaseDetails(event: ShowDiseaseDetails) {
+        val accessTokenRepo = AccessTokenRepositoryCreator.createAccessTokenRepository()
+        val getAccessTokenInteractor = GetAccessTokenInteractor(accessTokenRepo = accessTokenRepo)
+
+        getAccessTokenInteractor.execute()
+                .map { tokenHolder ->
+                    token = tokenHolder.token
+                    return@map PredictionRepositoryCreator.createPredictionRepository(tokenHolder.token)
+                }
+                .map { predictionRepo ->
+                    GetDiagnosysDetailsInteractor(
+                            patientInfo = PatientInfoImpl.getInstance(),
+                            predictionRepo = predictionRepo)
+                }
+                .flatMap { interactor -> interactor.execute(event.diagnosis.id) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy { diagnosisDetails ->
+                    Log.d(TAG, "DETAILS RECEIVED " + diagnosisDetails.toString())
+                    val details = diagnosisDetails
+
+                    val fragmentManager = supportFragmentManager
+                    val fragmentTransaction = fragmentManager.beginTransaction()
+                    fragmentTransaction.add(R.id.customActionBarHolder,
+                            CustomActionBar.getInstance(title = "Treatment suggestion",
+                                    description = "One more thing!"))
+                            .replace(R.id.contentHolder, DiagnosisDetailsFragment.getInstance(details.name, details.description, details.wikiUrl))
+                            .commit()
+                }
 
     }
 

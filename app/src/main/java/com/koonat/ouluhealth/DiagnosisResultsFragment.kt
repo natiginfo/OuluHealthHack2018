@@ -50,6 +50,6 @@ class DiagnosisResultsFragment : Fragment() {
     }
 }
 
-class ShowDiseaseDetails(diagnosis: Diagnosis)
+class ShowDiseaseDetails(val diagnosis: Diagnosis)
 class DiagnosisEvent(val diagnosisList: List<Diagnosis>)
 class SendDiagnosisEvent
