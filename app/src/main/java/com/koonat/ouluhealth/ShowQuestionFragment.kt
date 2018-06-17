@@ -50,7 +50,7 @@ class ShowQuestionFragment : Fragment() {
     }
 
     override fun onPause() {
-        EventBus.getDefault().register(this)
+        EventBus.getDefault().unregister(this)
         super.onPause()
     }
 

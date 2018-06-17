@@ -11,6 +11,7 @@ import com.koonat.ouluhealth.data.PredictionRepositoryCreator
 import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor
 import com.koonat.ouluhealth.domain.interactor.GetDiagnosisInteractor
 import com.koonat.ouluhealth.domain.interactor.GetPredictedSymptomsInteractor
+import com.koonat.ouluhealth.domain.model.Diagnosis
 import com.koonat.ouluhealth.domain.model.MatchedSymptom
 import com.koonat.ouluhealth.domain.model.PredictedSymptom
 import com.koonat.ouluhealth.search.SearchSymptomActivity
@@ -26,6 +27,7 @@ class DiagnoseActivity : AppCompatActivity() {
         val TAG = "DiagnoseActivity"
         val BACK_USER_DETAILS = "BACK_USER_DETAILS"
         val BACK_ADD_SYMPTOMS = "BACK_ADD_SYMPTOMS"
+        val BACK_DIAGNOSIS_RESULTS = "BACK_DIAGNOSIS_RESULTS"
         val PICK_SYMPTOM_REQUEST = 111
     }
 
@@ -141,6 +143,7 @@ class DiagnoseActivity : AppCompatActivity() {
         showNextQuestion()
     }
 
+    private lateinit var diagnosis: List<Diagnosis>
     private fun showNextQuestion() {
         if (lastQuestionIndex < predictedSymptoms.size) {
             EventBus.getDefault().post(
@@ -178,8 +181,30 @@ class DiagnoseActivity : AppCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeBy { diagnosisList ->
                         Log.d(TAG, "DIAGNOSYS RECEIVED " + diagnosisList.toString())
+                        diagnosis = diagnosisList
+                        val fragmentManager1 = supportFragmentManager
+                        val fragmentTransaction1 = fragmentManager1.beginTransaction()
+                        fragmentTransaction1
+                                .add(R.id.customActionBarHolder,
+                                        CustomActionBar.getInstance(title = "Diagnosis",
+                                                description = "Possible result according to provided information"))
+                                .replace(R.id.contentHolder, DiagnosisResultsFragment())
+                                .addToBackStack(BACK_DIAGNOSIS_RESULTS)
+                                // we do not want to go white view, so, backstack is empty for first fragments
+                                .commit()
                     }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onFragmentReady(event: SendDiagnosisEvent) {
+        EventBus.getDefault().post(DiagnosisEvent(diagnosis))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun showDiseaseDetails(event: ShowDiseaseDetails) {
+
+    }
+
 
 }
