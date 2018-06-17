@@ -1,4 +1,4 @@
-package com.koonat.ouluhealth;
+package com.koonat.ouluhealth.data;
 
 import com.koonat.ouluhealth.domain.repository.PatientInformationRepository;
 

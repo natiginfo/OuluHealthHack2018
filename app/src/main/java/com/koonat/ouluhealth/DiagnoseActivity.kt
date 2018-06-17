@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.gson.Gson
 import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
+import com.koonat.ouluhealth.data.PatientInfoImpl
 import com.koonat.ouluhealth.data.PredictionRepositoryCreator
 import com.koonat.ouluhealth.diagnosis.results.DiagnosisEvent
 import com.koonat.ouluhealth.diagnosis.results.DiagnosisResultsFragment

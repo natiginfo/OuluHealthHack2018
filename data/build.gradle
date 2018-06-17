@@ -2,6 +2,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+
+def Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
 android {
     compileSdkVersion 27
 
@@ -10,8 +13,11 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "ACCESS_TOKEN_URL", '"https://3f662ded.ngrok.io"'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        def defaultUserId = properties.getProperty("default_user_id", "")
+        buildConfigField "String", "USER_ID", '"' + defaultUserId + '"'
+        buildConfigField "String", "ACCESS_TOKEN_URL", '"https://3f662ded.ngrok.io"'
 
     }
 
