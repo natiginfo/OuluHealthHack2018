@@ -1,4 +1,4 @@
-package com.koonat.ouluhealth
+package com.koonat.ouluhealth.search
 
 import com.koonat.ouluhealth.domain.model.MatchedSymptom
 

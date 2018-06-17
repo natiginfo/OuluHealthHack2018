@@ -1,4 +1,4 @@
-package com.koonat.ouluhealth
+package com.koonat.ouluhealth.search
 
 import android.app.Activity
 import android.content.Intent
@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.jakewharton.rxbinding2.widget.RxTextView
+import com.koonat.ouluhealth.R
 import com.koonat.ouluhealth.domain.model.MatchedSymptom
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_search_symptom.*

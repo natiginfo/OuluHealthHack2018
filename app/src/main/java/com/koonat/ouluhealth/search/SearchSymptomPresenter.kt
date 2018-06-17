@@ -1,5 +1,6 @@
-package com.koonat.ouluhealth
+package com.koonat.ouluhealth.search
 
+import com.koonat.ouluhealth.PatientInfoImpl
 import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
 import com.koonat.ouluhealth.data.PredictionRepositoryCreator
 import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor

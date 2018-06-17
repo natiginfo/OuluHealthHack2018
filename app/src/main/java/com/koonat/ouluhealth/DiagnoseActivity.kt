@@ -9,9 +9,10 @@ import com.google.gson.Gson
 import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
 import com.koonat.ouluhealth.data.PredictionRepositoryCreator
 import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor
-import com.koonat.ouluhealth.domain.interactor.GetMatchedSymptomsInteractor
 import com.koonat.ouluhealth.domain.interactor.GetPredictedSymptomsInteractor
 import com.koonat.ouluhealth.domain.model.MatchedSymptom
+import com.koonat.ouluhealth.domain.model.PredictedSymptom
+import com.koonat.ouluhealth.search.SearchSymptomActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -21,7 +22,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class DiagnoseActivity : AppCompatActivity() {
     companion object {
-        val TAG="DiagnoseActivity"
+        val TAG = "DiagnoseActivity"
         val BACK_USER_DETAILS = "BACK_USER_DETAILS"
         val BACK_ADD_SYMPTOMS = "BACK_ADD_SYMPTOMS"
         val PICK_SYMPTOM_REQUEST = 111
@@ -93,6 +94,15 @@ class DiagnoseActivity : AppCompatActivity() {
 
     private var token = ""
     private fun showAdditionalQuestions(matchedSymptom: MatchedSymptom?) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction
+                .add(R.id.customActionBarHolder,
+                        CustomActionBar.getInstance(description = "Additional questions",
+                                title = "Do you also have"))
+                .add(R.id.contentHolder, ShowQuestionFragment())
+                .commit()
+
         val accessTokenRepo = AccessTokenRepositoryCreator.createAccessTokenRepository()
         val getAccessTokenInteractor = GetAccessTokenInteractor(accessTokenRepo = accessTokenRepo)
 
@@ -110,17 +120,37 @@ class DiagnoseActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy { predictedSymptoms ->
-                    Log.d(TAG, "QUESTIONS RECEIVED")
-
-                    val fragmentManager = supportFragmentManager
-                    val fragmentTransaction = fragmentManager.beginTransaction()
-                    fragmentTransaction
-                            .add(R.id.customActionBarHolder,
-                                    CustomActionBar.getInstance(title = "What are your symptoms?",
-                                            description = "Additional questions"))
-                            .add(R.id.contentHolder, ShowQuestionFragment())
-                            .commit()
+                    Log.d(TAG, "QUESTIONS RECEIVED " + predictedSymptoms.toString())
+                    printQuestions(predictedSymptoms)
                 }
 
     }
+
+    private lateinit var predictedSymptoms: List<PredictedSymptom>
+    private var lastQuestionIndex = 0
+    private fun printQuestions(predictedSymptoms: List<PredictedSymptom>?) {
+        this.predictedSymptoms = predictedSymptoms!!
+        showNextQuestion()
+    }
+
+    var answeredQuestions: MutableList<PredictedSymptom> = ArrayList()
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewQuestionAnsweredEvent(event: ShowQuestionFragment.NewQuestionAnsweredEvent) {
+        answeredQuestions.add(event.questionData)
+        showNextQuestion()
+    }
+
+    private fun showNextQuestion() {
+        if (lastQuestionIndex < predictedSymptoms.size) {
+            EventBus.getDefault().post(
+                    ShowQuestionFragment.ShowQuestionEvent(predictedSymptoms.size.toDouble(),
+                            (lastQuestionIndex + 1).toDouble(),
+                            predictedSymptoms[lastQuestionIndex]
+                    ))
+            lastQuestionIndex++
+        } else {
+            //show progressbar and analyze
+        }
+    }
+
 }

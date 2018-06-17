@@ -19,7 +19,7 @@ data class PredictionBody(
 data class PredictedSymptom(
         @SerializedName("id") val id: Int,
         @SerializedName("name") val name: String,
-        @SerializedName("score") var score: Int,
+        @SerializedName("score") var score: Double,
         @SerializedName("positive") var positive: Boolean = false,
         @SerializedName("skip") var skip: Boolean = false
 )
