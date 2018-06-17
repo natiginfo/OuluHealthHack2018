@@ -2,22 +2,27 @@ package com.koonat.ouluhealth
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.gson.Gson
 import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
+import com.koonat.ouluhealth.data.HospitalsRepositoryCreator
 import com.koonat.ouluhealth.data.PatientInfoImpl
 import com.koonat.ouluhealth.data.PredictionRepositoryCreator
+import com.koonat.ouluhealth.diagnosis.hospitals.HospitalEvent
+import com.koonat.ouluhealth.diagnosis.hospitals.HospitalsFragment
+import com.koonat.ouluhealth.diagnosis.hospitals.SendHospitalsEvent
+import com.koonat.ouluhealth.diagnosis.hospitals.ShowHospitalBooking
 import com.koonat.ouluhealth.diagnosis.results.DiagnosisEvent
 import com.koonat.ouluhealth.diagnosis.results.DiagnosisResultsFragment
 import com.koonat.ouluhealth.diagnosis.results.SendDiagnosisEvent
 import com.koonat.ouluhealth.diagnosis.results.ShowDiseaseDetails
-import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor
-import com.koonat.ouluhealth.domain.interactor.GetDiagnosisInteractor
-import com.koonat.ouluhealth.domain.interactor.GetDiagnosysDetailsInteractor
-import com.koonat.ouluhealth.domain.interactor.GetPredictedSymptomsInteractor
+import com.koonat.ouluhealth.domain.interactor.*
 import com.koonat.ouluhealth.domain.model.Diagnosis
+import com.koonat.ouluhealth.domain.model.Hospital
 import com.koonat.ouluhealth.domain.model.MatchedSymptom
 import com.koonat.ouluhealth.domain.model.PredictedSymptom
 import com.koonat.ouluhealth.search.SearchSymptomActivity
@@ -36,6 +41,7 @@ class DiagnoseActivity : AppCompatActivity() {
         val BACK_DIAGNOSIS_RESULTS = "BACK_DIAGNOSIS_RESULTS"
         val BACK_DIAGNOSIS_DETAILS = "BACK_DIAGNOSIS_DETAILS"
         val PICK_SYMPTOM_REQUEST = 111
+        val SHOW_URL_REQUEST = 112
     }
 
     private var age: Int = 0
@@ -99,6 +105,13 @@ class DiagnoseActivity : AppCompatActivity() {
             val matchedSymptom = Gson().fromJson<MatchedSymptom>(symptom, MatchedSymptom::class.java)
             matchedSymptom.positive = true
             showAdditionalQuestions(matchedSymptom)
+        } else if (requestCode == SHOW_URL_REQUEST) {
+            AlertDialog.Builder(this)
+                    .setTitle("It'll be rainy...")
+                    .setMessage("It seems like that day will be rainy. Would you like to see transportation options?")
+                    .setPositiveButton("Book taxi", null)
+                    .setNegativeButton("No, thanks", null)
+                    .create().show()
         }
     }
 
@@ -240,6 +253,38 @@ class DiagnoseActivity : AppCompatActivity() {
                             .addToBackStack(BACK_DIAGNOSIS_DETAILS)
                             .commit()
                 }
+    }
+
+
+    private lateinit var receivedHospitals: List<Hospital>
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun showBookingOptions(event: ShowBookingOptionsEvent) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        GetHospitalsInteractor(HospitalsRepositoryCreator.createHospitalsRepository())
+                .execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    receivedHospitals = it
+                    fragmentTransaction.add(R.id.customActionBarHolder,
+                            CustomActionBar.getInstance(title = "Choose hospital",
+                                    description = "Where do you prefer to go?"))
+                            .replace(R.id.contentHolder, HospitalsFragment())
+                            .commit()
+                }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onFragmentReady(event: SendHospitalsEvent) {
+        EventBus.getDefault().post(HospitalEvent(receivedHospitals))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onFragmentReady(event: ShowHospitalBooking) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(event.hospital.appointmentUrl))
+        startActivityForResult(browserIntent, SHOW_URL_REQUEST)
     }
 
 

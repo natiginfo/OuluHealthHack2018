@@ -17,7 +17,7 @@ android {
 
         def defaultUserId = properties.getProperty("default_user_id", "")
         buildConfigField "String", "USER_ID", '"' + defaultUserId + '"'
-        buildConfigField "String", "ACCESS_TOKEN_URL", '"https://3f662ded.ngrok.io"'
+        buildConfigField "String", "ACCESS_TOKEN_URL", '"http://89f55bf8.ngrok.io"'
 
     }
 
