@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
 import com.koonat.ouluhealth.data.PredictionRepositoryCreator
 import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor
+import com.koonat.ouluhealth.domain.interactor.GetDiagnosisInteractor
 import com.koonat.ouluhealth.domain.interactor.GetPredictedSymptomsInteractor
 import com.koonat.ouluhealth.domain.model.MatchedSymptom
 import com.koonat.ouluhealth.domain.model.PredictedSymptom
@@ -144,12 +145,40 @@ class DiagnoseActivity : AppCompatActivity() {
         if (lastQuestionIndex < predictedSymptoms.size) {
             EventBus.getDefault().post(
                     ShowQuestionFragment.ShowQuestionEvent(predictedSymptoms.size.toDouble(),
-                            (lastQuestionIndex + 1).toDouble(),
+                            (lastQuestionIndex).toDouble(),
                             predictedSymptoms[lastQuestionIndex]
                     ))
             lastQuestionIndex++
         } else {
             //show progressbar and analyze
+            val fragmentManager = supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction
+                    .add(R.id.customActionBarHolder,
+                            CustomActionBar.getInstance(description = "Please, wait",
+                                    title = "Analyzing"))
+                    .add(R.id.contentHolder, ProgressFragment())
+                    .commit()
+
+            val accessTokenRepo = AccessTokenRepositoryCreator.createAccessTokenRepository()
+            val getAccessTokenInteractor = GetAccessTokenInteractor(accessTokenRepo = accessTokenRepo)
+
+            getAccessTokenInteractor.execute()
+                    .map { tokenHolder ->
+                        token = tokenHolder.token
+                        return@map PredictionRepositoryCreator.createPredictionRepository(tokenHolder.token)
+                    }
+                    .map { predictionRepo ->
+                        GetDiagnosisInteractor(
+                                patientInfo = PatientInfoImpl.getInstance(),
+                                predictionRepo = predictionRepo)
+                    }
+                    .flatMap { interactor -> interactor.execute(answeredQuestions) }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy { diagnosisList ->
+                        Log.d(TAG, "DIAGNOSYS RECEIVED " + diagnosisList.toString())
+                    }
         }
     }
 
