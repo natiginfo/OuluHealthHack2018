@@ -8,6 +8,10 @@ import android.util.Log
 import com.google.gson.Gson
 import com.koonat.ouluhealth.data.AccessTokenRepositoryCreator
 import com.koonat.ouluhealth.data.PredictionRepositoryCreator
+import com.koonat.ouluhealth.diagnosis.results.DiagnosisEvent
+import com.koonat.ouluhealth.diagnosis.results.DiagnosisResultsFragment
+import com.koonat.ouluhealth.diagnosis.results.SendDiagnosisEvent
+import com.koonat.ouluhealth.diagnosis.results.ShowDiseaseDetails
 import com.koonat.ouluhealth.domain.interactor.GetAccessTokenInteractor
 import com.koonat.ouluhealth.domain.interactor.GetDiagnosisInteractor
 import com.koonat.ouluhealth.domain.interactor.GetDiagnosysDetailsInteractor
