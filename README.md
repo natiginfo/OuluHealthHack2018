@@ -1,5 +1,5 @@
 # OuluHealthHack2018
-Doctor Asked is app for self diagnosis built at Oulu Health Hack 2018 using the API provided by CGI.
+Doctor Asked is app for self diagnosis built at Oulu Health Hack 2018 using the API provided by CGI. For now there are no unit tests.
 
 # License
 ```
