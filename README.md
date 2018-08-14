@@ -1,4 +1,9 @@
 # OuluHealthHack2018
+
+**Note:** as CGI closed API access, you cannot directly use the app. However, if you have access to that API, you can add required URL, token and user_id and check out the app.
+
+[Demo video](https://www.youtube.com/watch?v=ki7czhvcd5Q)
+
 Doctor Asked is app for self diagnosis built at Oulu Health Hack 2018 using the API provided by CGI. For now there are no unit tests.
 
 # License
