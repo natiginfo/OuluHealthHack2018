@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "4684150b-06ae-40a6-9731-60f3a3edb04f",
+		"name": "Fake CGI API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/token",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "9ca74492-6219-4970-ac9c-1d8484680ff4",
+					"name": "get token",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "{\n\t\"token\":\"b2e43f01-b8f0-4e4f-8d77-8add539084df\"\n}"
+				}
+			]
+		},
+		{
+			"name": "match symptoms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/symptoms/match?patient_id=patient_id&user_id=user_id&query=anyquery",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"symptoms",
+						"match"
+					],
+					"query": [
+						{
+							"key": "patient_id",
+							"value": "patient_id"
+						},
+						{
+							"key": "user_id",
+							"value": "user_id"
+						},
+						{
+							"key": "query",
+							"value": "anyquery"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "ffd5d407-5acf-4ea2-b502-25e3e2e7b361",
+					"name": "match symptoms",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/symptoms/match?patient_id=patient_id&user_id=user_id&query=anyquery",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"symptoms",
+								"match"
+							],
+							"query": [
+								{
+									"key": "patient_id",
+									"value": "patient_id"
+								},
+								{
+									"key": "user_id",
+									"value": "user_id"
+								},
+								{
+									"key": "query",
+									"value": "anyquery"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 111,\n        \"name\": \"Headache\",\n        \"positive\": false\n    },\n    {\n        \"id\": 121,\n        \"name\": \"Frontal headache\",\n        \"positive\": false\n    },\n    {\n        \"id\": 124,\n        \"name\": \"Ear ache\",\n        \"positive\": false\n    },\n    {\n        \"id\": 165,\n        \"name\": \"Toothache\",\n        \"positive\": false\n    },\n    {\n        \"id\": 192,\n        \"name\": \"Diarrhea\",\n        \"positive\": false\n    },\n    {\n        \"id\": 134,\n        \"name\": \"Apathy\",\n        \"positive\": false\n    },\n    {\n        \"id\": 941,\n        \"name\": \"Decreased heart rate\",\n        \"positive\": false\n    },\n    {\n        \"id\": 245,\n        \"name\": \"Hesitancy\",\n        \"positive\": false\n    },\n    {\n        \"id\": 666,\n        \"name\": \"Changes in stool appearance\",\n        \"positive\": false\n    },\n    {\n        \"id\": 921,\n        \"name\": \"Diminished hearing\",\n        \"positive\": false\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "predict symptoms",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/symptoms/predict",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"symptoms",
+						"predict"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "1d871eed-beba-4e7f-bf6a-f6d42e86c230",
+					"name": "predict symptoms",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/symptoms/predict",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"symptoms",
+								"predict"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 111,\n        \"name\": \"Headache\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 121,\n        \"name\": \"Cough\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 124,\n        \"name\": \"Ear pain\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 165,\n        \"name\": \"Fever\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 192,\n        \"name\": \"Coryza\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 134,\n        \"name\": \"Painful sinuses\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 941,\n        \"name\": \"Dizziness\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 245,\n        \"name\": \"Nasal congestion\",\n        \"positive\": false,\n        \"score\": 99.1,\n        \"skip\": false\n    },\n    {\n        \"id\": 666,\n        \"name\": \"Sore throat\",\n        \"positive\": false\n    },\n    {\n        \"id\": 921,\n        \"name\": \"Pain\",\n        \"positive\": false\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "diagnose",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/diagnoses/rank",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"diagnoses",
+						"rank"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "315abf7f-e0b8-42f2-aeb2-2629cef7fba8",
+					"name": "diagnose",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/diagnoses/rank",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"diagnoses",
+								"rank"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "[\n\t{\n\t\t\"id\": 1,\n\t\t\"name\":\"Chronic sinusitis\",\n\t\t\"probability\":20\n\t},\n\t{\n\t\t\"id\": 2,\n\t\t\"name\":\"Acute sinusitis\",\n\t\t\"probability\":11\n\t},\n\t{\n\t\t\"id\": 3,\n\t\t\"name\":\"Tracheitis\",\n\t\t\"probability\":10\n\t},\n\t{\n\t\t\"id\": 4,\n\t\t\"name\":\"Common cold\",\n\t\t\"probability\":19\n\t},\n\t{\n\t\t\"id\": 5,\n\t\t\"name\":\"Nose disorder\",\n\t\t\"probability\":18\n\t},\n\t{\n\t\t\"id\": 6,\n\t\t\"name\":\"Seasonal allergies (hay fever)\",\n\t\t\"probability\":17\n\t},\n\t{\n\t\t\"id\": 7,\n\t\t\"name\":\"Abscess of nose\",\n\t\t\"probability\":16\n\t},\n\t{\n\t\t\"id\": 8,\n\t\t\"name\":\"Otis media\",\n\t\t\"probability\":16\n\t}\n]"
+				}
+			]
+		},
+		{
+			"name": "get diagnosis details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/diagnosis/{id}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"diagnosis",
+						"{id}"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "1f901d7a-eb44-4add-a8cc-0d64e129f0d0",
+					"name": "get diagnosis details",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/diagnosis/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"diagnosis",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "{\n\t\"id\":1,\n\t\"name\":\"Mocked name\",\n\t\"description\":\"This request comes from mock server as CGI API has only closed access. If there was open access to CGI API then this description would be equal to information about the sickness you might have.\",\n\t\"wiki_url\": \"https://en.wikipedia.org/wiki/MockServer\",\n\t\"icd\":\"icd\"\n}"
+				}
+			]
+		}
+	]
+}
