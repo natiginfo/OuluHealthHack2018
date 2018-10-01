@@ -2,17 +2,13 @@ package com.koonat.ouluhealth.domain.interactor
 
 import com.koonat.ouluhealth.domain.model.TokenHolder
 import com.koonat.ouluhealth.domain.repository.AccessTokenRepository
-import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.observers.TestObserver
-import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import java.util.*
 
 class GetAccessTokenInteractorTest {
 
