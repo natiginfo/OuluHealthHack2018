@@ -4,7 +4,9 @@ Doctor Asked is app for self diagnosis built at Oulu Health Hack 2018 using the 
 
 [Demo video](https://www.youtube.com/watch?v=ki7czhvcd5Q)
 
-**Note:** as CGI closed API access, you cannot directly use the app. However, if you have access to that API, you can add required URL, token and user_id and check out the app.
+**Note:** as CGI closed API access, this app uses mock server. Mock server is hosted on Postman, so, there're some usage limits.
+Therefore, if you see error messages from server side, I recommend you to import mock server details to Postman from ```mock``` folder.
+After running your server, make sure you update API_URL variable on ```data/build.gradle``` file.
 
 # License
 ```
