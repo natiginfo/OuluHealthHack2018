@@ -58,7 +58,7 @@ public class DependencyRegistryForData {
             synchronized (DependencyRegistryForData.class) {
                 if (retrofitForEtsimo == null) {
                     Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                            .baseUrl("https://secure.etsimo.com")
+                            .baseUrl(BuildConfig.API_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                             .client(okHttpClient);
