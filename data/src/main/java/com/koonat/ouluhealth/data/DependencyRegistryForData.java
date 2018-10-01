@@ -78,7 +78,7 @@ public class DependencyRegistryForData {
             synchronized (DependencyRegistryForData.class) {
                 if (retrofitForAccessToken == null) {
                     Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                            .baseUrl(BuildConfig.ACCESS_TOKEN_URL)
+                            .baseUrl(BuildConfig.API_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 

@@ -17,7 +17,6 @@ android {
 
         def defaultUserId = properties.getProperty("default_user_id", "")
         buildConfigField "String", "USER_ID", '"' + defaultUserId + '"'
-        buildConfigField "String", "ACCESS_TOKEN_URL", '"http://89f55bf8.ngrok.io"'
         buildConfigField "String", "API_URL", '"https://7a87632d-f476-4df4-a0ac-55a32f301e86.mock.pstmn.io"'
 
     }
